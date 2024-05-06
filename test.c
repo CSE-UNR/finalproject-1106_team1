@@ -141,26 +141,26 @@ void CropImage() {
 void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment) {
     char mapping[] = {' ', '.', 'o', 'O', ' '};
 
-    // Loop through each pixel in the image
+    
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            // Get the original pixel value
+            
             int original_pixel = image[i][j] - '0';
 
-            // Adjust the pixel value based on the adjustment factor
+           
             int dimmed_pixel = original_pixel + adjustment;
 
-            // Ensure the dimmed pixel value stays within the valid range (0 - 4)
+            
             if (dimmed_pixel < 0) {
                 dimmed_pixel = 0;
             } else if (dimmed_pixel > 4) {
                 dimmed_pixel = 4;
             }
 
-            // Display the adjusted pixel using the mapping array
+            
             printf("%c", mapping[dimmed_pixel]);
         }
-        printf("\n"); // Move to the next row after displaying all columns
+        printf("\n"); 
     }
 }
 

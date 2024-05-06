@@ -17,7 +17,11 @@
 // Function prototypes
 void LoadImage(int image[MAXROWS][MAXCOLS]);
 void DisplayImage(int image[][MAXCOLS], int rows, int cols);
+<<<<<<< HEAD
 void EditImage(int image[][MAXCOLS], int rows, int cols);Update test.c
+=======
+void EditImage(int image[][MAXCOLS], int rows, int cols);
+>>>>>>> 870fbd3ef935602903384016b8d0d246c6293694
 
 // MENU 2 Function prototypes
 void CropImage();
@@ -182,7 +186,11 @@ void BrightImage() {
 void RotateImage(){
 }
 
+
 void SaveImage {
+
+void SaveImage() {
+
 }
 
 void RotateImage(){

@@ -182,5 +182,8 @@ void BrightImage() {
 void RotateImage(){
 }
 
+void SaveImage {
+}
+
 void RotateImage(){
 }

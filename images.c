@@ -17,7 +17,7 @@
 // Function prototypes
 void LoadImage(int image[MAXROWS][MAXCOLS]);
 void DisplayImage(int image[][MAXCOLS], int rows, int cols);
-void EditImage(int image[][MAXCOLS], int rows, int cols);
+void EditImage(int image[][MAXCOLS], int rows, int cols);Update test.c
 
 // MENU 2 Function prototypes
 void CropImage();

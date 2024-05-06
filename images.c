@@ -11,48 +11,49 @@
 
 #include <stdio.h>
 
-// MENU 1 Function prototypes
-void LoadImage();
-void DisplayImage();
-void EditImage();
+#define MAXROWS 12
+#define MAXCOLS 21
+
+// Function prototypes
+void LoadImage(int image[MAXROWS][MAXCOLS]);
+void DisplayImage(int image[][MAXCOLS], int rows, int cols);
+void EditImage(int image[][MAXCOLS], int rows, int cols);
 
 // MENU 2 Function prototypes
 void CropImage();
-void DimImage();
+void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment);
 void BrightImage();
 void RotateImage();
 void SaveImage();
 
-// Global variables
-int image[500][500]; // Ms.Erin constraint: suggested max image size of [500] x [500] pixels (2D Array)
-int ImageWidth, ImageHeight;
+// Global variable
+int image[MAXROWS][MAXCOLS]; // Image data
 
-// Main Function
 int main() {
-
     int choice;
-
-// MENU 1 with options
+    int ImageWidth = 0, ImageHeight = 0; 
 
     do {
         printf("\n***ERINSTAGRAM***\n");
         printf("1: Load image\n");
         printf("2: Display image\n");
-        printf("3: Edit the current image\n");
+        printf("3: Edit image\n");
         printf("0: Exit\n");
         printf("Choose from one of the options above: ");
         scanf("%d", &choice);
 
         switch (choice) {
             case 1:
-                LoadImage();
+                LoadImage(image);
+                ImageWidth = MAXCOLS;
+                ImageHeight = MAXROWS;
                 break;
             case 2:
-                DisplayImage();
+                DisplayImage(image, ImageHeight, ImageWidth);
                 break;
             case 3:
-                EditImage();
-                break;
+            	EditImage(image, ImageHeight, ImageWidth);
+            	break;
             case 0:
                 printf("\nGoodbye!\n");
                 return 0;
@@ -62,56 +63,54 @@ int main() {
     } while (choice != 0);
 
     return 0;
+
 }
 
-// MENU 1 - choice '1': Load an image
-void LoadImage() {
-
+void LoadImage(int image[MAXROWS][MAXCOLS]) {
     char filename[100];
     printf("What is the name of the image file? ");
     scanf("%s", filename);
-    
+
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         printf("Could not find an image with that filename.\n");
         return;
     }
 
-    fscanf(file, "%d %d", &ImageWidth, &ImageHeight);
-
-    for (int i = 0; i < ImageHeight; i++) {
-    
-        for (int j = 0; j < ImageWidth; j++) {
-        
-            fscanf(file, "%d", &image[i][j]);
+    char temp;
+    for (int i = 0; i < MAXROWS; i++) {
+        for (int j = 0; j < MAXCOLS; j++) {
+            if (fscanf(file, " %c", &temp) != 1) {
+                printf("Error reading image data.\n");
+                fclose(file);
+                return;
+            }
+            image[i][j] = temp;
         }
+        fscanf(file, "\n"); // Consume the newline character
     }
 
     fclose(file);
-    
+    printf("Image successfully loaded!\n");
 }
-
-// MENU 1 - choice '2': Display an image
-void DisplayImage() {
-
-    for (int i = 0; i < ImageHeight; i++) {
+void DisplayImage(int image[][MAXCOLS], int rows, int cols) {
     
-        for (int j = 0; j < ImageWidth; j++) {
-        
-            printf("%c", image[i][j] >= 128 ? '#' : ' ');
+    char mapping[] = {' ','.','o','O','0'};
+
+   
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            int value = image[i][j] - '0'; 
+            printf("%c", mapping[value]);
         }
-        
         printf("\n");
-        
     }
 }
-
-// MENU 1 - choice '3': Edit the image (Crop, Brighten, Dim, or Rotate)
-void EditImage() {
-
- int EditChoice;
+void EditImage(int image[][MAXCOLS], int rows, int cols) {
+     int EditChoice;
 
 // MENU 2
+ do{
         printf("\n***EDITING***\n");
         printf("1: Crop image\n");
         printf("2: Dim image\n");
@@ -119,16 +118,17 @@ void EditImage() {
         printf("4: Rotate image\n");
         printf("0: Return to main menu\n");
         printf("Choose from one of the options above: ");
+        scanf("%d", &EditChoice);
         
          switch (EditChoice) {
             case 1:
                 CropImage();
                 break;
             case 2:
-                BrightImage();
+                DimImage(image, rows, cols, -1);
                 break;
             case 3:
-                DimImage();
+                BrightImage();
                 break;
             case 4:
                 RotateImage();
@@ -140,34 +140,50 @@ void EditImage() {
                 printf("Invalid option. Please try again.\n");
         }
     } while (EditChoice != 0);
-
-    return 0;
-	}
-   
+ printf("Exiting EditImage function.\n"); 
 }
+   
+
 
 void CropImage() {
-     // case 1
-    // Implement cropping logic
-}
+    }
+    
 
-void DimImage() {
-     // case 2
-    // Implement dimming logic
+void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment) {
+    char mapping[] = {' ', '.', 'o', 'O', ' '};
+
+    // Loop through each pixel in the image
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            // Get the original pixel value
+            int original_pixel = image[i][j] - '0';
+
+            // Adjust the pixel value based on the adjustment factor
+            int dimmed_pixel = original_pixel + adjustment;
+
+            // Ensure the dimmed pixel value stays within the valid range (0 - 4)
+            if (dimmed_pixel < 0) {
+                dimmed_pixel = 0;
+            } else if (dimmed_pixel > 4) {
+                dimmed_pixel = 4;
+            }
+
+            // Display the adjusted pixel using the mapping array
+            printf("%c", mapping[dimmed_pixel]);
+        }
+        printf("\n"); // Move to the next row after displaying all columns
+    }
 }
 
 void BrightImage() {
-     // case 3
-    // Implement dimming logic
+   
 }
 
-void RotateImage() {
-     // case 4
-    // Implement rotating logic
+void RotateImage(){
 }
 
-void SaveImage() {
-    // case 0
-    // Implement saving logic
+void SaveImage {
 }
 
+void RotateImage(){
+}

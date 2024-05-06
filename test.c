@@ -1,3 +1,14 @@
+// 1106-Team1: Ashton Hayes & Yadira Ayala
+
+// Final Group Project
+
+// Goal:
+// 1. Familiarize us with coding collaboratively
+// 2. Familiarize us with 2D Arrays
+// 3. Provide us with continued practice using everything!
+
+// Due Date: 5/7/2024
+
 #include <stdio.h>
 
 #define MAXROWS 12
@@ -166,6 +177,9 @@ void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment) {
 
 void BrightImage() {
    
+}
+
+void RotateImage(){
 }
 
 void RotateImage(){

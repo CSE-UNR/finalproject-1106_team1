@@ -116,7 +116,7 @@ void EditImage() {
         printf("1: Crop image\n");
         printf("2: Dim image\n");
         printf("3: Brighten image\n");
-        printf("3: Rotate image\n");
+        printf("4: Rotate image\n");
         printf("0: Return to main menu\n");
         printf("Choose from one of the options above: ");
         

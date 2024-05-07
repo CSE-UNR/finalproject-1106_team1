@@ -22,7 +22,7 @@ void EditImage(int image[][MAXCOLS], int rows, int cols);
 // MENU 2 Function prototypes
 void CropImage();
 void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment);
-void BrightImage();
+void BrightImage(int image[][MAXCOLS], int rows, int cols, int adjustment);
 void RotateImage();
 void SaveImage();
 
@@ -87,7 +87,7 @@ void LoadImage(int image[MAXROWS][MAXCOLS]) {
             }
             image[i][j] = temp;
         }
-        fscanf(file, "\n"); // Consume the newline character
+        fscanf(file, "\n"); 
     }
 
     fclose(file);
@@ -128,7 +128,7 @@ void EditImage(int image[][MAXCOLS], int rows, int cols) {
                 DimImage(image, rows, cols, -1);
                 break;
             case 3:
-                BrightImage();
+                BrightImage(image, rows, cols, +1);
                 break;
             case 4:
                 RotateImage();
@@ -175,15 +175,31 @@ void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment) {
     }
 }
 
-void BrightImage() {
+void BrightImage(int image[][MAXCOLS], int rows, int cols, int adjustment) {
+    char mapping[] = {' ', '.', 'o', 'O', '0'};
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            int original_pixel = image[i][j] - '0';
+            int brightened_pixel = original_pixel + adjustment;
+
+            if (brightened_pixel < 0) {
+                brightened_pixel = 0;
+            } else if (brightened_pixel > 4) {
+                brightened_pixel = 4;
+            }
+
+            printf("%c", mapping[brightened_pixel]);
+        }
+        printf("\n");
+    }
+}
    
-}
+
 
 void RotateImage(){
 }
 
-void SaveImage {
+void SaveImage() {
 }
 
-void RotateImage(){
-}

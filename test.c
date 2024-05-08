@@ -11,8 +11,8 @@
 
 #include <stdio.h>
 
-#define MAXROWS 12
-#define MAXCOLS 21
+#define MAXROWS 50
+#define MAXCOLS 50
 
 // Function prototypes
 void LoadImage(int image[MAXROWS][MAXCOLS]);
@@ -39,7 +39,7 @@ int main() {
         printf("2: Display image\n");
         printf("3: Edit image\n");
         printf("0: Exit\n");
-        printf("Choose from one of the options above: ");
+        printf("\nChoose from one of the options above: ");
         scanf("%d", &choice);
 
         switch (choice) {
@@ -87,12 +87,13 @@ void LoadImage(int image[MAXROWS][MAXCOLS]) {
             }
             image[i][j] = temp;
         }
-        fscanf(file, "\n"); 
+        fscanf(file, "\n"); // Consume the newline character
     }
 
     fclose(file);
     printf("Image successfully loaded!\n");
 }
+
 void DisplayImage(int image[][MAXCOLS], int rows, int cols) {
     
     char mapping[] = {' ','.','o','O','0'};
@@ -117,7 +118,7 @@ void EditImage(int image[][MAXCOLS], int rows, int cols) {
         printf("3: Brighten image\n");
         printf("4: Rotate image\n");
         printf("0: Return to main menu\n");
-        printf("Choose from one of the options above: ");
+        printf("\nChoose from one of the options above: ");
         scanf("%d", &EditChoice);
         
          switch (EditChoice) {
@@ -134,7 +135,7 @@ void EditImage(int image[][MAXCOLS], int rows, int cols) {
                 RotateImage();
                 break;
             case 0:
-                printf("\nWould you like to save the file? (y/n)\n");
+                printf("Would you like to save the file? (y/n)\n");
                 return;
             default:
                 printf("Invalid option. Please try again.\n");

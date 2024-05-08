@@ -15,18 +15,15 @@
 #define MAXCOLS 21
 
 // Function prototypes
-void LoadImage(int image[MAXROWS][MAXCOLS]);
-void DisplayImage(int image[][MAXCOLS], int rows, int cols);
-<<<<<<< HEAD
-void EditImage(int image[][MAXCOLS], int rows, int cols);Update test.c
-=======
-void EditImage(int image[][MAXCOLS], int rows, int cols);
->>>>>>> 870fbd3ef935602903384016b8d0d246c6293694
+void LoadImage(int image[][MAXCOLS]);
+void DisplayImage(int rows, int cols, int image[][MAXCOLS]);
+void EditImage(int rows, int cols, int image[][MAXCOLS]);
+
 
 // MENU 2 Function prototypes
 void CropImage();
-void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment);
-void BrightImage();
+void DimImage(int rows, int cols, int adjust, int image[][MAXCOLS]);
+void BrightImage(int rows, int cols, int adjust, int image[][MAXCOLS]);
 void RotateImage();
 void SaveImage();
 
@@ -53,10 +50,10 @@ int main() {
                 ImageHeight = MAXROWS;
                 break;
             case 2:
-                DisplayImage(image, ImageHeight, ImageWidth);
+                DisplayImage(ImageHeight, ImageWidth, image);
                 break;
             case 3:
-            	EditImage(image, ImageHeight, ImageWidth);
+            	EditImage(ImageHeight, ImageWidth, image);
             	break;
             case 0:
                 printf("\nGoodbye!\n");
@@ -75,42 +72,54 @@ void LoadImage(int image[MAXROWS][MAXCOLS]) {
     printf("What is the name of the image file? ");
     scanf("%s", filename);
 
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
+    FILE *fptr = fopen(filename, "r");
+    if (fptr == NULL) {
         printf("Could not find an image with that filename.\n");
         return;
     }
 
-    char temp;
-    for (int i = 0; i < MAXROWS; i++) {
-        for (int j = 0; j < MAXCOLS; j++) {
-            if (fscanf(file, " %c", &temp) != 1) {
-                printf("Error reading image data.\n");
-                fclose(file);
-                return;
+    char temp = 0;
+    int row = 0, col = 0;
+    while (fscanf(fptr, "%c", &temp) == 1 && row < MAXROWS) {
+        if (temp == '\n') {
+            row++;
+            col = 0;
+        } else if (temp != ' ') { 
+            if (col < MAXCOLS) {
+                image[row][col] = temp - '0'; 
+                col++;
             }
-            image[i][j] = temp;
         }
-        fscanf(file, "\n"); // Consume the newline character
     }
 
-    fclose(file);
+    fclose(fptr);
     printf("Image successfully loaded!\n");
 }
-void DisplayImage(int image[][MAXCOLS], int rows, int cols) {
-    
-    char mapping[] = {' ','.','o','O','0'};
 
-   
+void DisplayImage(int rows, int cols, int image[][MAXCOLS]) {
+    if (rows == 0 || cols == 0) {
+        printf("Sorry, no image to display\n");
+        return;
+    }
+
+    char pixels[] = {' ', '.', 'o', 'O', '0'};
+
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            int value = image[i][j] - '0'; 
-            printf("%c", mapping[value]);
+            int value = image[i][j]; // Original pixel value
+            printf("%c", pixels[value]);
         }
         printf("\n");
     }
 }
-void EditImage(int image[][MAXCOLS], int rows, int cols) {
+
+
+void EditImage(int rows, int cols, int image[][MAXCOLS]) {
+	if (rows == 0 || cols == 0) {
+        printf("Sorry, no image to edit\n");
+        return;
+    }
+
      int EditChoice;
 
 // MENU 2
@@ -129,22 +138,22 @@ void EditImage(int image[][MAXCOLS], int rows, int cols) {
                 CropImage();
                 break;
             case 2:
-                DimImage(image, rows, cols, -1);
+                DimImage(rows, cols, -1, image);
                 break;
             case 3:
-                BrightImage();
+                BrightImage(rows, cols, +1, image);
                 break;
             case 4:
                 RotateImage();
                 break;
             case 0:
-                printf("\nWould you like to save the file? (y/n)\n");
+                
                 return;
             default:
                 printf("Invalid option. Please try again.\n");
         }
     } while (EditChoice != 0);
- printf("Exiting EditImage function.\n"); 
+ printf("Exiting EditImage function.\n"); // Print statement indicating the function exit
 }
    
 
@@ -153,45 +162,53 @@ void CropImage() {
     }
     
 
-void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment) {
-    char mapping[] = {' ', '.', 'o', 'O', ' '};
+void DimImage(int rows, int cols, int adjust, int image[][MAXCOLS]) {
+    char pixels[] = {' ', '.', 'o', 'O', ' '};
 
-    // Loop through each pixel in the image
+   
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            // Get the original pixel value
-            int original_pixel = image[i][j] - '0';
+            int og_pixel = image[i][j];
+            int dimmed_pixel = og_pixel + adjust;
 
-            // Adjust the pixel value based on the adjustment factor
-            int dimmed_pixel = original_pixel + adjustment;
-
-            // Ensure the dimmed pixel value stays within the valid range (0 - 4)
             if (dimmed_pixel < 0) {
                 dimmed_pixel = 0;
             } else if (dimmed_pixel > 4) {
                 dimmed_pixel = 4;
             }
 
-            // Display the adjusted pixel using the mapping array
-            printf("%c", mapping[dimmed_pixel]);
+            
+            printf("%c", pixels[dimmed_pixel]);
         }
-        printf("\n"); // Move to the next row after displaying all columns
+        printf("\n"); 
     }
 }
 
-void BrightImage() {
-   
+void BrightImage(int rows, int cols, int adjust, int image[][MAXCOLS]) {
+    char pixels[] = {' ', '.', 'o', 'O', '0'};
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            int original_pixel = image[i][j];
+            int brightened_pixel = original_pixel + adjust;
+
+            if (brightened_pixel < 0) {
+                brightened_pixel = 0;
+            } else if (brightened_pixel > 4) {
+                brightened_pixel = 4;
+            }
+
+            printf("%c", pixels[brightened_pixel]);
+        }
+        printf("\n");
+    }
 }
+
 
 void RotateImage(){
 }
-
-
-void SaveImage {
 
 void SaveImage() {
 
 }
 
-void RotateImage(){
-}

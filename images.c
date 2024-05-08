@@ -148,18 +148,78 @@ void EditImage(int image[][MAXCOLS], int rows, int cols) {
 }
    
 
-
-void CropImage(int image[][MAXCOLS], int rows, int cols){
-	int userCol1, userCol2, userRow1, userRow2;
-	char tempArray[rows][cols];
+void CropImage(int image[][MAXCOLS], int rows, int cols) {
+    int userCol1, userCol2, userRow1, userRow2;
+    char tempArray[MAXROWS][MAXCOLS];
     char mapping[] = {' ','.','o','O','0'};
 
+    // Copy original image to tempArray
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            int value = image[i][j] - '0'; 
-            image[1][1] = '1';
-            image[2][1] = '1';
-            image[1][21] = '1';
+            tempArray[i][j] = image[i][j];
+        }
+    }
+
+    printf("The image you want to crop is %d x %d.\n", rows, cols);
+    printf("The row and column values start in the upper lefthand corner.\n");
+
+    printf("Which column do you want to be the new left side?");
+    scanf("%d", &userCol1);
+
+    printf("Which column do you want to be the new right side?");
+    scanf("%d", &userCol2);
+
+    printf("Which row do you want to be the new top?");
+    scanf("%d", &userRow1);
+
+    printf("Which row do you want to be the new bottom?");
+    scanf("%d", &userRow2);
+
+    if (userCol1 < 0 || userCol1 >= cols || userCol2 <= userCol1 || userCol2 >= cols || userRow1 < 0 || userRow1 >= rows || userRow2 <= userRow1 || userRow2 >= rows) {
+        printf("Invalid crop dimensions.\n");
+        return;
+    }
+
+    // Update dimensions of the cropped image
+    rows = userRow2 - userRow1 + 1;
+    cols = userCol2 - userCol1 + 1;
+
+    // Copy the cropped portion into the original image
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            image[i][j] = tempArray[userRow1 + i][userCol1 + j];
+        }
+    }
+
+    // Print the cropped image
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            int value = image[i][j] - '0';
+            printf("%c", mapping[value]);
+        }
+        printf("\n");
+    }
+}
+
+/*int main() {
+  //  int rows = MAXROWS, cols = MAXCOLS;
+    //int image[MAXROWS][MAXCOLS] = {0}; // Initialize your image here
+    //CropImage(image, &rows, &cols);
+    //return 0;
+*/
+
+
+/*void CropImage(int image[][MAXCOLS], int rows, int cols){
+//	int userCol1, userCol2, userRow1, userRow2;
+//	char tempArray[rows][cols];
+  //  char mapping[] = {' ','.','o','O','0'};
+//
+  //  for (int i = 0; i < rows; i++) {
+    //    for (int j = 0; j < cols; j++) {
+      //      int value = image[i][j] - '0'; 
+        //    image[1][1] = '1';
+          //  image[2][1] = '1';
+            //image[1][21] = '1';
             image[1][20] = '2';
             image[12][1] = '1';
             image[12][2] = '2';
@@ -213,7 +273,7 @@ void CropImage(int image[][MAXCOLS], int rows, int cols){
     }
     
 
-    }
+    } */
     
 
 void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment) {

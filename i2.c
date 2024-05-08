@@ -40,7 +40,7 @@ void SaveImage();
 
 // Global variable
 int image[MAXROWS][MAXCOLS]; // Image data
->>>>>>> ad00d3c077cdf7ad14e1116bbaaa3bf0e0664875
+
 
 int main() {
     int choice;
@@ -64,19 +64,19 @@ int main() {
                 printf("\n");
                 break;
             case 2:
-<<<<<<< HEAD
+
                 DisplayImage(image, &ImageHeight, &ImageWidth);
                 printf("\n");
                 break;
             case 3:
             	EditImage(image, ImageHeight, ImageWidth);
             	printf("\n");
-=======
+
                 DisplayImage(ImageHeight, ImageWidth, image);
                 break;
             case 3:
             	EditImage(ImageHeight, ImageWidth, image);
->>>>>>> ad00d3c077cdf7ad14e1116bbaaa3bf0e0664875
+
             	break;
             case 0:
                 printf("\nGoodbye!\n");
@@ -118,7 +118,7 @@ void LoadImage(int image[MAXROWS][MAXCOLS]) {
             image[i][j] = temp;
         }
         
-        fscanf(file, "\n"); // Consume the newline character
+        fscanf(file, "\n"); 
     }
 
     fclose(file);
@@ -133,7 +133,7 @@ void DisplayImage(int image[][MAXCOLS], int* rows, int* cols) {
         for (int j = 0; j < *cols; j++) {
             int value = image[i][j] - '0'; 
             printf("%c", mapping[value]);
-=======
+
         }
     }
 
@@ -153,7 +153,7 @@ void DisplayImage(int rows, int cols, int image[][MAXCOLS]) {
         for (int j = 0; j < cols; j++) {
             int value = image[i][j]; // Original pixel value
             printf("%c", pixels[value]);
->>>>>>> ad00d3c077cdf7ad14e1116bbaaa3bf0e0664875
+
         }
         printf("\n");
     }
@@ -187,32 +187,26 @@ void EditImage(int rows, int cols, int image[][MAXCOLS]) {
                 DimImage(rows, cols, -1, image);
                 break;
             case 3:
-<<<<<<< HEAD
+
                 BrightImage(image, rows, cols, 1);
-=======
                 BrightImage(rows, cols, +1, image);
->>>>>>> ad00d3c077cdf7ad14e1116bbaaa3bf0e0664875
                 break;
             case 4:
                 RotateImage(image, rows, cols);
                 break;
             case 0:
-<<<<<<< HEAD
-=======
-                
->>>>>>> ad00d3c077cdf7ad14e1116bbaaa3bf0e0664875
                 return;
             default:
                 printf("Invalid option. Please try again.\n");
         }
     } while (EditChoice != 0);
-<<<<<<< HEAD
+
     
  printf("Exiting EditImage function.\n"); 
  
-=======
+
  printf("Exiting EditImage function.\n"); // Print statement indicating the function exit
->>>>>>> ad00d3c077cdf7ad14e1116bbaaa3bf0e0664875
+
 }
    
 
@@ -248,18 +242,18 @@ void CropImage(int image[][MAXCOLS], int rows, int cols) {
         return;
     }
 
-    // Update dimensions of the cropped image
+    
     rows = userRow2 - userRow1 + 1;
     cols = userCol2 - userCol1 + 1;
 
-    // Copy the cropped portion into the original image
+
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             image[i][j] = tempArray[userRow1 + i][userCol1 + j];
         }
     }
 
-    // Print the cropped image
+    
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             int value = image[i][j] - '0';

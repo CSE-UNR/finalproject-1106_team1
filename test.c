@@ -17,10 +17,11 @@
 // Function prototypes
 void LoadImage(int image[MAXROWS][MAXCOLS]);
 void DisplayImage(int image[][MAXCOLS], int rows, int cols);
-void EditImage(int image[][MAXCOLS], int rows, int cols);
+void EditImage(int image[][MAXCOLS], int rows, int cols, int ImageHeight, int ImageWidth);
 
 // MENU 2 Function prototypes
-void CropImage();
+void CropImage(int *rows, int *cols, int image[][MAXCOLS]);
+
 void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment);
 void BrightImage(int image[][MAXCOLS], int rows, int cols, int adjustment);
 void RotateImage();
@@ -52,7 +53,7 @@ int main() {
                 DisplayImage(image, ImageHeight, ImageWidth);
                 break;
             case 3:
-            	EditImage(image, ImageHeight, ImageWidth);
+            	EditImage(image, ImageHeight, ImageWidth, MAXROWS, MAXCOLS);
             	break;
             case 0:
                 printf("\nGoodbye!\n");
@@ -107,7 +108,7 @@ void DisplayImage(int image[][MAXCOLS], int rows, int cols) {
         printf("\n");
     }
 }
-void EditImage(int image[][MAXCOLS], int rows, int cols) {
+void EditImage(int image[][MAXCOLS], int rows, int cols, int ImageHeight, int ImageWidth);
      int EditChoice;
 
 // MENU 2
@@ -123,7 +124,7 @@ void EditImage(int image[][MAXCOLS], int rows, int cols) {
         
          switch (EditChoice) {
             case 1:
-                CropImage();
+                CropImage(ImageHeight, ImageWidth, image);
                 break;
             case 2:
                 DimImage(image, rows, cols, -1);
@@ -144,10 +145,51 @@ void EditImage(int image[][MAXCOLS], int rows, int cols) {
  printf("Exiting EditImage function.\n"); 
 }
    
+}
 
+void CropImage(int *rows, int *cols, int image[][MAXCOLS]) {
+    // Display the image
+    printf("\n");
+    DisplayImage(image, *rows, *cols);
+    printf("\n");
 
-void CropImage() {
+    // Get user input for new dimensions
+    int new_cols, new_rows;
+    printf("The image you want to crop is %d x %d.\n", *rows, *cols);
+    printf("The row and column values start in the upper lefthand corner.\n\n");
+    printf("Which column do you want to be the new left side? ");
+    scanf("%d", &new_cols);
+    printf("Which column do you want to be the new right side? ");
+    scanf("%d", &(*cols));  // Update the number of columns
+    printf("Which row do you want to be the new top? ");
+    scanf("%d", &new_rows);
+    printf("Which row do you want to be the new bottom? ");
+    scanf("%d", &(*rows));  // Update the number of rows
+
+    // Crop the image
+    int cropped_image[MAXROWS][MAXCOLS];
+    for (int i = new_rows; i < *rows; i++) {
+        for (int j = new_cols; j < *cols; j++) {
+            cropped_image[i - new_rows][j - new_cols] = image[i][j];
+        }
     }
+
+    // Update the original image with the cropped image
+    for (int i = 0; i < *rows; i++) {
+        for (int j = 0; j < *cols; j++) {
+            image[i][j] = cropped_image[i][j];
+        }
+    }
+
+    
+    *rows -= new_rows;
+    *cols -= new_cols;
+
+ 
+    printf("\nCropped image:\n");
+    DisplayImage(image, *rows, *cols);
+}
+    
     
 
 void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment) {

@@ -90,12 +90,13 @@ void LoadImage(int image[MAXROWS][MAXCOLS]) {
             image[i][j] = temp;
         }
         
-        fscanf(file, "\n"); // Consume the newline character
+        fscanf(file, "\n"); 
     }
 
     fclose(file);
     printf("\nImage successfully loaded!\n");
 }
+
 void DisplayImage(int image[][MAXCOLS], int* rows, int* cols) {
     
     char mapping[] = {' ','.','o','O','0'};
@@ -220,18 +221,14 @@ void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment) {
 
     char mapping[] = {' ', '.', 'o', 'O', ' '};
     
-    // Loop through each pixel in the image
+
     for (int i = 0; i < rows; i++) {
     
         for (int j = 0; j < cols; j++) {
-        
-            // Get the original pixel value
             int original_pixel = image[i][j] - '0';
+            int dimmed_pixel = original_pixel + adjustment;
 
-            // Adjust the pixel value based on the adjustment factor
-           int dimmed_pixel = original_pixel + adjustment;
-
-            // Ensure the dimmed pixel value stays within the valid range (0 - 4)
+          
             if (dimmed_pixel < 0) {
             
                 dimmed_pixel = 0;
@@ -241,10 +238,10 @@ void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment) {
                 dimmed_pixel = 4;
             }
 
-            // Display the adjusted pixel using the mapping array
+          
             printf("%c", mapping[dimmed_pixel]);
         }
-        printf("\n"); // Move to the next row after displaying all columns
+        printf("\n"); 
         
     }
     char choice;
@@ -263,20 +260,14 @@ void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment) {
         	return;
         	
     	} else {
-    	
     		 for (int i = 0; i < rows; i++) {
-        		for (int j = 0; j < cols; j++) {
-           			// Get the original pixel value
-           	 		int original_pixel = image[i][j] - '0';
-
-            			// Adjust the pixel value based on the adjustment factor
-           			int dimmed_pixel = original_pixel + adjustment;
-
-            			// Ensure the dimmed pixel value stays within the valid range (0 - 4)
-            			if (dimmed_pixel < 0) {
-                			dimmed_pixel = 0;
-            			} else if (dimmed_pixel > 4) {
-                			dimmed_pixel = 4;
+        	    for (int j = 0; j < cols; j++) {
+           	 	 int original_pixel = image[i][j] - '0';
+			 int dimmed_pixel = original_pixel + adjustment;
+			 if (dimmed_pixel < 0) {
+                	 dimmed_pixel = 0;
+            		} else if (dimmed_pixel > 4) {
+                	dimmed_pixel = 4;
             			}
             			fprintf(file, "%c", mapping[dimmed_pixel]);
         		}
@@ -301,33 +292,22 @@ void BrightImage(int image[][MAXCOLS], int rows, int cols, int adjustment){
 
     char mapping[] = {' ', '.', 'o', 'O', '0'};
     
-    // Loop through each pixel in the image
+ 
     for (int i = 0; i < rows; i++) {
-    
         for (int j = 0; j < cols; j++) {
-        
-            // Get the original pixel value
             int original_pixel = image[i][j] - '0';
-		
-            // Adjust the pixel value based on the adjustment factor
-           int bright_pixel = original_pixel + adjustment;
-		
-            // Ensure the bright pixel value stays within the valid range (0 - 4)
+            int bright_pixel = original_pixel + adjustment;
+
             if (bright_pixel < 0) { 
-            
-                bright_pixel = 0;
-                
-            } else if (bright_pixel > 4 ) {
-            	
+                bright_pixel = 0; 
+            } else if (bright_pixel > 4 ) {	
                	bright_pixel = 4;
                
             }
 		
-		
-             //Display the adjusted pixel using the mapping array
             printf("%c", mapping[bright_pixel]);
         }
-        printf("\n"); // Move to the next row after displaying all columns
+        printf("\n"); 
         
     }
     char choice;
@@ -347,43 +327,30 @@ void BrightImage(int image[][MAXCOLS], int rows, int cols, int adjustment){
         	
     	} else {
     	
-    		 // Loop through each pixel in the image
+    		
     		for (int i = 0; i < rows; i++) {
-    
         		for (int j = 0; j < cols; j++) {
-        
-            			// Get the original pixel value
-            			int original_pixel = image[i][j] - '0';
-		
-           			// Adjust the pixel value based on the adjustment factor
-           			int bright_pixel = original_pixel + adjustment;
-		
-            			// Ensure the bright pixel value stays within the valid range (0 - 4)
+            		     int original_pixel = image[i][j] - '0';
+           		     int bright_pixel = original_pixel + adjustment;
             			if (bright_pixel < 0) {
-            
-                			bright_pixel = 0;
+                		bright_pixel = 0;
                 
             			} else if (bright_pixel > 4 ) {
-            	
-               				bright_pixel = 4;
+            			bright_pixel = 4;
                
             			}
-		
-				//Display the adjusted pixel using the mapping array
+
             			fprintf(file, "%c", mapping[bright_pixel]);
         		}
-        		fprintf(file, "\n"); // Move to the next row after displaying all columns
-        
+        		fprintf(file, "\n"); 
     		}
-    	
     		printf("Image successfully loaded!\n");
     		fclose(file);
     	}
     }
     	
     if(choice == 'n') {
-    
-     return;
+    return;
      
     }
 }
@@ -432,7 +399,6 @@ void RotateImage(int image[][MAXCOLS], int rows, int cols){
                 }
                 printf("\n");
             }
-    	
     		printf("Image successfully loaded!\n");
     		fclose(file);
     	}

@@ -11,8 +11,8 @@
 
 #include <stdio.h>
 
-#define MAXROWS 12
-#define MAXCOLS 21
+#define MAXROWS 50
+#define MAXCOLS 50
 
 // Function prototypes
 void LoadImage(int image[MAXROWS][MAXCOLS]);
@@ -22,7 +22,7 @@ void EditImage(int image[][MAXCOLS], int rows, int cols);
 // MENU 2 Function prototypes
 void CropImage();
 void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment);
-void BrightImage();
+void BrightImage(int image[][MAXCOLS], int rows, int cols, int adjustment);
 void RotateImage();
 void SaveImage();
 
@@ -39,7 +39,7 @@ int main() {
         printf("2: Display image\n");
         printf("3: Edit image\n");
         printf("0: Exit\n");
-        printf("Choose from one of the options above: ");
+        printf("\nChoose from one of the options above: ");
         scanf("%d", &choice);
 
         switch (choice) {
@@ -93,6 +93,7 @@ void LoadImage(int image[MAXROWS][MAXCOLS]) {
     fclose(file);
     printf("Image successfully loaded!\n");
 }
+
 void DisplayImage(int image[][MAXCOLS], int rows, int cols) {
     
     char mapping[] = {' ','.','o','O','0'};
@@ -117,7 +118,7 @@ void EditImage(int image[][MAXCOLS], int rows, int cols) {
         printf("3: Brighten image\n");
         printf("4: Rotate image\n");
         printf("0: Return to main menu\n");
-        printf("Choose from one of the options above: ");
+        printf("\nChoose from one of the options above: ");
         scanf("%d", &EditChoice);
         
          switch (EditChoice) {
@@ -128,13 +129,13 @@ void EditImage(int image[][MAXCOLS], int rows, int cols) {
                 DimImage(image, rows, cols, -1);
                 break;
             case 3:
-                BrightImage();
+                BrightImage(image, rows, cols, +1);
                 break;
             case 4:
                 RotateImage();
                 break;
             case 0:
-                printf("\nWould you like to save the file? (y/n)\n");
+                printf("Would you like to save the file? (y/n)\n");
                 return;
             default:
                 printf("Invalid option. Please try again.\n");
@@ -175,15 +176,31 @@ void DimImage(int image[][MAXCOLS], int rows, int cols, int adjustment) {
     }
 }
 
-void BrightImage() {
+void BrightImage(int image[][MAXCOLS], int rows, int cols, int adjustment) {
+    char mapping[] = {' ', '.', 'o', 'O', '0'};
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            int original_pixel = image[i][j] - '0';
+            int brightened_pixel = original_pixel + adjustment;
+
+            if (brightened_pixel < 0) {
+                brightened_pixel = 0;
+            } else if (brightened_pixel > 4) {
+                brightened_pixel = 4;
+            }
+
+            printf("%c", mapping[brightened_pixel]);
+        }
+        printf("\n");
+    }
+}
    
-}
+
 
 void RotateImage(){
 }
 
-void SaveImage {
+void SaveImage() {
 }
 
-void RotateImage(){
-}
